@@ -77,6 +77,8 @@ Properties
    +---------------------------------------------------------+---------------------------------------------------------------------------------------+------------+
    | :ref:`BakeQuality<enum_LightmapGI_BakeQuality>`         | :ref:`quality<class_LightmapGI_property_quality>`                                     | ``1``      |
    +---------------------------------------------------------+---------------------------------------------------------------------------------------+------------+
+   | :ref:`float<class_float>`                               | :ref:`texel_scale<class_LightmapGI_property_texel_scale>`                             | ``1.0``    |
+   +---------------------------------------------------------+---------------------------------------------------------------------------------------+------------+
    | :ref:`bool<class_bool>`                                 | :ref:`use_denoiser<class_LightmapGI_property_use_denoiser>`                           | ``true``   |
    +---------------------------------------------------------+---------------------------------------------------------------------------------------+------------+
    | :ref:`bool<class_bool>`                                 | :ref:`use_texture_for_bounces<class_LightmapGI_property_use_texture_for_bounces>`     | ``true``   |
@@ -420,7 +422,7 @@ The strength of denoising step applied to the generated lightmaps. Only effectiv
 - void **set_directional** **(** :ref:`bool<class_bool>` value **)**
 - :ref:`bool<class_bool>` **is_directional** **(** **)**
 
-If ``true``, bakes lightmaps to contain directional information as spherical harmonics. This results in more realistic lighting appearance, especially with normal mapped materials and for lights that have their direct light baked (:ref:`Light3D.light_bake_mode<class_Light3D_property_light_bake_mode>` set to :ref:`Light3D.BAKE_STATIC<class_Light3D_constant_BAKE_STATIC>`). The directional information is also used to provide rough reflections for static and dynamic objects. This has a small run-time performance cost as the shader has to perform more work to interpret the direction information from the lightmap. Directional lightmaps also take longer to bake and result in larger file sizes.
+If ``true``, bakes lightmaps to contain directional information as spherical harmonics. This results in more realistic lighting appearance, especially with normal mapped materials and for lights that have their direct light baked (:ref:`Light3D.light_bake_mode<class_Light3D_property_light_bake_mode>` set to :ref:`Light3D.BAKE_STATIC<class_Light3D_constant_BAKE_STATIC>` and with :ref:`Light3D.editor_only<class_Light3D_property_editor_only>` set to ``false``). The directional information is also used to provide rough reflections for static and dynamic objects. This has a small run-time performance cost as the shader has to perform more work to interpret the direction information from the lightmap. Directional lightmaps also take longer to bake and result in larger file sizes.
 
 \ **Note:** The property's name has no relationship with :ref:`DirectionalLight3D<class_DirectionalLight3D>`. :ref:`directional<class_LightmapGI_property_directional>` works with all light types.
 
@@ -582,6 +584,23 @@ The maximum texture size for the generated texture atlas. Higher values will res
 The quality preset to use when baking lightmaps. This affects bake times, but output file sizes remain mostly identical across quality levels.
 
 To further speed up bake times, decrease :ref:`bounces<class_LightmapGI_property_bounces>`, disable :ref:`use_denoiser<class_LightmapGI_property_use_denoiser>` and increase the lightmap texel size on 3D scenes in the Import doc.
+
+.. rst-class:: classref-item-separator
+
+----
+
+.. _class_LightmapGI_property_texel_scale:
+
+.. rst-class:: classref-property
+
+:ref:`float<class_float>` **texel_scale** = ``1.0``
+
+.. rst-class:: classref-property-setget
+
+- void **set_texel_scale** **(** :ref:`float<class_float>` value **)**
+- :ref:`float<class_float>` **get_texel_scale** **(** **)**
+
+Scales the lightmap texel density of all meshes for the current bake. This is a multiplier that builds upon the existing lightmap texel size defined in each imported 3D scene, along with the per-mesh density multiplier (which is designed to be used when the same mesh is used at different scales). Lower values will result in faster bake times.
 
 .. rst-class:: classref-item-separator
 
